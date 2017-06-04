@@ -1,4 +1,5 @@
 import scala.annotation.tailrec
+
 /**
   * Created by nakam on 2017/05/29.
   */
@@ -6,91 +7,46 @@ object Test {
 
   def main(args: Array[String]): Unit = {
 
-    val dividend = 4   // 割られる数
-    val divisor = 3    // 割る数
+    val dividend = 9 // 割られる数
+    val divisor = 74 // 割る数
 
-    val firstRemainder = new Remainder(dividend % divisor,0)
-    val pointerA = findSameRemainders(firstRemainder, firstRemainder, divisor)
-    val pointerC = getStartPoint(firstRemainder,pointerA,divisor)
-    val length = getLength(pointerC,getNextRemainder(pointerC,divisor),divisor)
+    val result = FloydsCycleFindingAlgorithm.execute(dividend, divisor)
+    val answer = Division.divided(dividend, divisor, List.empty[Int], result.startPointIndex + 1 + result.length)
 
-    println("有理数：" + dividend + "/" + divisor)
-    printf("循環節の開始位置：小数第%d位, 循環節の長さ：%d%n",pointerC.index + 1,length)
+    println("有理数")
+    println(dividend.toString + "/" + divisor.toString)
+    println()
+    println("循環小数")
+    println(getAnswerStr1(new StringBuilder("  "), result.startPointIndex, result.length, 0))
+    println(getAnswerStr2(new StringBuilder(), answer))
+    println()
+    printf("循環節の開始位置：小数第%d位, 循環節の長さ：%d%n", result.startPointIndex + 1, result.length)
   }
 
-  def getLength(pointerC:Remainder, pointerD:Remainder, divisor:Int): Int = {
-    if(pointerC.number == pointerD.number){
-      pointerD.index - pointerC.index
-    } else {
-      getLength(pointerC, getNextRemainder(pointerD,divisor), divisor)
-    }
-  }
-
-  /**
-    * 循環節の開始位置を見つける
-    * @param pointerC ポインタC
-    * @param pointerA ポインタA
-    * @param divisor 割る数
-    * @return 循環節の開始位置
-    */
   @tailrec
-  def getStartPoint(pointerC:Remainder, pointerA:Remainder,divisor:Int): Remainder = {
-    if(pointerC.number == pointerA.number) {
-      pointerC
+  def getAnswerStr2(str: StringBuilder, answer: Seq[Int]): StringBuilder = {
+    if (answer.size == 1) {
+      str ++= "."
+    }
+    str ++= answer.last.toString
+    if (answer.size == 1) {
+      str.reverse
     } else {
-      getStartPoint(getNextRemainder(pointerC,divisor),getNextRemainder(pointerA,divisor),divisor)
+      getAnswerStr2(str, answer.init)
     }
   }
 
-  /**
-    * 同じ余りを見つける
-    * @param pointerA ポインタA
-    * @param pointerB ポインタB
-    * @param divisor　割る数
-    * @return 同じ余りが見つかったときのポインタA
-    */
   @tailrec
-  def findSameRemainders(pointerA:Remainder, pointerB:Remainder, divisor:Int): Remainder ={
-    val resultA = getNextRemainder(pointerA, divisor)
-    val resultB = getNextRemainder(pointerB, divisor,2)
-    if(resultA.number == resultB.number){
-      resultA
+  def getAnswerStr1(str: StringBuilder, startPointIndex: Int, length: Int, index: Int): StringBuilder = {
+    val s = if (startPointIndex == index || startPointIndex + length - 1 == index) {
+      "."
     } else {
-      findSameRemainders(resultA, resultB, divisor)
+      " "
     }
-  }
-
-  /**
-    * 指定したオフセット分先の余りを得る
-    * @param remainder 現在の余り
-    * @param divisor 割る数
-    * @param offset オフセット
-    * @return 先にある余り
-    */
-  @tailrec
-  def getNextRemainder(remainder: Remainder, divisor:Int, offset:Int):Remainder ={
-    val newRemainder:Remainder = getNextRemainder(remainder, divisor)
-    if(offset == 1) {
-      newRemainder
+    if (startPointIndex + length == index) {
+      str ++= s
     } else {
-      getNextRemainder(newRemainder, divisor, offset - 1)
+      getAnswerStr1(str ++= s, startPointIndex, length, index + 1)
     }
-  }
-
-  /**
-    * 次の余りを得る。
-    * @param remainder 現在の余り
-    * @param divisor 割る数
-    * @return 次の余り
-    */
-  def getNextRemainder(remainder: Remainder, divisor:Int): Remainder ={
-    new Remainder(remainder.number * 10 % divisor, remainder.index + 1)
   }
 }
-
-/**
-  * 余り
-  * @param number 余り
-  * @param index 添え字
-  */
-class Remainder(val number:Int, val index:Int)

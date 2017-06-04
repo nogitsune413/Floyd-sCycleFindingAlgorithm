@@ -3,19 +3,17 @@ import scala.annotation.tailrec
 /**
   * Created by nakam on 2017/06/04.
   */
-class FloydsCycleFindingAlgorithm {
+object FloydsCycleFindingAlgorithm {
 
   def execute(dividend:Int,divisor:Int) :FloydsCycleFindingAlgorithmResult = {
     val firstRemainder = new Remainder(dividend % divisor,0)
     val pointerA = findSameRemainders(firstRemainder, firstRemainder, divisor)
     val pointerC = getStartPoint(firstRemainder,pointerA,divisor)
     val length = getLength(pointerC,getNextRemainder(pointerC,divisor),divisor)
-
-    println("有理数：" + dividend + "/" + divisor)
-    printf("循環節の開始位置：小数第%d位, 循環節の長さ：%d%n",pointerC.index + 1,length)
     new FloydsCycleFindingAlgorithmResult(pointerC.index,length)
   }
 
+  @tailrec
   private def getLength(pointerC:Remainder, pointerD:Remainder, divisor:Int): Int = {
     if(pointerC.number == pointerD.number){
       pointerD.index - pointerC.index
