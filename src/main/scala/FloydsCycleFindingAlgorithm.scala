@@ -1,10 +1,17 @@
 import scala.annotation.tailrec
 
 /**
+  * フロイドの循環検出法
   * Created by nakam on 2017/06/04.
   */
 object FloydsCycleFindingAlgorithm {
 
+  /**
+    * フロイドの循環検出法を実行する。
+    * @param dividend 割られる数
+    * @param divisor 割る数
+    * @return 循環の開始位置と循環節の長さ
+    */
   def execute(dividend:Int,divisor:Int) :FloydsCycleFindingAlgorithmResult = {
     val firstRemainder = new Remainder(dividend % divisor,0)
     val pointerA = findSameRemainders(firstRemainder, firstRemainder, divisor)
@@ -13,6 +20,13 @@ object FloydsCycleFindingAlgorithm {
     new FloydsCycleFindingAlgorithmResult(pointerC.index,length)
   }
 
+  /**
+    * 循環節の長さを求める
+    * @param pointerC 循環節の開始位置を指すポインタC
+    * @param pointerD 循環節の終了位置を探すポインタD
+    * @param divisor 割る数
+    * @return　循環節の長さ
+    */
   @tailrec
   private def getLength(pointerC:Remainder, pointerD:Remainder, divisor:Int): Int = {
     if(pointerC.number == pointerD.number){
@@ -91,4 +105,9 @@ object FloydsCycleFindingAlgorithm {
   class Remainder(val number:Int, val index:Int)
 }
 
+/**
+  * フロイドの循環検出法の結果
+  * @param startPointIndex 循環の開始位置
+  * @param length 循環節の長さ
+  */
 class FloydsCycleFindingAlgorithmResult(val startPointIndex:Int, val length:Int)
