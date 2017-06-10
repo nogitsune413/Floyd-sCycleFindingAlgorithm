@@ -12,7 +12,7 @@ object Division {
     * @param divisor 割る数
     * @param answer 算出済みの商
     * @param time 割り算の回数
-    * @return
+    * @return 算出した商のリスト
     */
   @tailrec
   def divided(dividend:Int, divisor:Int, answer:Seq[Int], time:Int): Seq[Int] ={
