@@ -10,14 +10,14 @@ object Division {
     * 割り算で小数点以下の値を求める。
     * @param dividend 割られる数
     * @param divisor 割る数
-    * @param answer 算出済みの商
+    * @param quotientList 算出済みの商
     * @param time 割り算の回数
     * @return 算出した商のリスト
     */
   @tailrec
-  def divided(dividend:Int, divisor:Int, answer:Seq[Int], time:Int): Seq[Int] ={
+  def divided(dividend:Int, divisor:Int, quotientList:Seq[Int], time:Int): Seq[Int] ={
     val result = divided(dividend, divisor)
-    val currentAnswer = answer :+ result.quotient
+    val currentAnswer = quotientList :+ result.quotient
     if(time == 1){
       currentAnswer
     } else {
