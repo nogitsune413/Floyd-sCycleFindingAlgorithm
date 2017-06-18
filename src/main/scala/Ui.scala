@@ -22,7 +22,7 @@ object Ui {
     println("有理数")
     println(dividend.toString + "/" + divisor.toString + "\n")
     println("循環小数")
-    println(getAnswerStr1(new StringBuilder("  "), startPointIndex, length, 0))
+    println(getAnswerStr1(new StringBuilder(), quotientList.head.toString.length + 1 + startPointIndex, length, 0))
     println(getAnswerStr2(new StringBuilder(), quotientList).toString() + "\n")
     printf("循環節の開始位置：小数第%d位, 循環節の長さ：%d%n", startPointIndex + 1, length)
   }
