@@ -10,7 +10,7 @@ object Ui {
 
   /**
     * 得られた答えをコンソール出力する
-    * @param algorithmName 使用したアルゴリズム
+    * @param algorithmName 使用したアルゴリズムの名前
     * @param dividend 割られる数
     * @param divisor 割る数
     * @param quotientList 循環小数を求める操作で得られた商のリスト
