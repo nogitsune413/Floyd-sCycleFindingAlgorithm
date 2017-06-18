@@ -1,6 +1,3 @@
-import com.sun.org.apache.xml.internal.security.algorithms.JCEMapper.Algorithm
-import sun.security.util.Length
-
 import scala.annotation.tailrec
 
 /**
